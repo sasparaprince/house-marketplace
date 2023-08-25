@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import ForgotPassword from './pages/ForgotPassword'
 import Profile from './pages/Profile'
+import Navbar from './components/Navbar'
 
 const App = () => {
   return (
@@ -13,12 +14,14 @@ const App = () => {
       <Router>
         <Routes>
           <Route path='/' element={<Explore />} />
-          <Route path='/Offers' element={<Offers />} />
-          <Route path='/Profile' element={<SignIn />} />
+          <Route path='/offers' element={<Offers />} />
+          <Route path='/profile' element={<SignIn />} />
           <Route path='/sign-in' element={<SignIn />} />
           <Route path='/sign-up' element={<SignUp />} />
-          <Route path='/ForgotPassword' element={<ForgotPassword />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
         </Routes>
+        <Navbar />
+
       </Router>
     </>
   ) 
