@@ -1,7 +1,7 @@
 
 import { initializeApp } from "firebase/app";
 import {getFirestore} from 'firebase/firestore'
-import { get } from "http";
+// import { get } from "http";
 
 
 // Your web app's Firebase configuration
