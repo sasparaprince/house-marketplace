@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import {setDoc , doc , serverTimestamp} from 'firebase/firestore'
 import { db } from "../firebase.config";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -42,6 +43,11 @@ const SignUP = () => {
       updateProfile(auth.currentUser, {
         displayName: name,
       });
+
+      const formDataCopy = {...formData}
+      delete formDataCopy.password
+      formDataCopy.timestamp = serverTimestamp()
+      await setDoc(doc(db, 'users',user.uid), formDataCopy)
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -55,7 +61,7 @@ const SignUP = () => {
           <p className="pageHeader">Welcome Back!</p>
         </header>
 
-        <form onSubmit={onSubmit} autocomplete="off">
+        <form onSubmit={onSubmit} autoComplete="off" >
           <input
             type="text"
             className="nameInput"
@@ -72,7 +78,7 @@ const SignUP = () => {
             id="email"
             value={email}
             onChange={onChange}
-            autocomplete="off"
+
           />
           <div className="passwordInputDiv">
             <input
