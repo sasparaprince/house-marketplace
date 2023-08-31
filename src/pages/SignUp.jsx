@@ -4,14 +4,13 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import {setDoc , doc , serverTimestamp} from 'firebase/firestore'
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
-import {toast} from 'react-toastify'
-
+import { toast } from "react-toastify";
 
 const SignUP = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,13 +45,13 @@ const SignUP = () => {
         displayName: name,
       });
 
-      const formDataCopy = {...formData}
-      delete formDataCopy.password
-      formDataCopy.timestamp = serverTimestamp()
-      await setDoc(doc(db, 'users',user.uid), formDataCopy)
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
       navigate("/");
     } catch (error) {
-      toast.error('Something went wrong with registration')
+      toast.error("Something went wrong with registration");
     }
   };
 
@@ -63,7 +62,7 @@ const SignUP = () => {
           <p className="pageHeader">Welcome Back!</p>
         </header>
 
-        <form onSubmit={onSubmit} autoComplete="off" >
+        <form onSubmit={onSubmit} autoComplete="off">
           <input
             type="text"
             className="nameInput"
@@ -80,7 +79,6 @@ const SignUP = () => {
             id="email"
             value={email}
             onChange={onChange}
-
           />
           <div className="passwordInputDiv">
             <input
