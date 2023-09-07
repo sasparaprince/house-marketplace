@@ -21,7 +21,7 @@ const Category = () => {
   const params = useParams();
 
   useEffect(() => {
-    const fetchListing = async () => {
+    const fetchListings = async () => {
       try {
         //Get reference
 
@@ -45,23 +45,24 @@ const Category = () => {
           return listings.push({
             id: doc.id,
             data: doc.data(),
-          });
-        });
+          })
+        })
         setlistings(listings);
         setloading(false);
       } catch (error) {
         toast.error("Could not fetch listings");
       }
     };
-    fetchListing();
+    fetchListings();
   },[params.categoryName]);
+  
   return (
-    <div className="category">
+    <div className='category'>
       <header>
-        <p className="pageHeader">
-          {params.categoryName === "rent"
-            ? "Places for rent"
-            : "Places for sale"}
+        <p className='pageHeader'>
+          {params.categoryName === 'rent'
+            ? 'Places for rent'
+            : 'Places for sale'}
         </p>
       </header>
 
@@ -69,19 +70,23 @@ const Category = () => {
         <Spinner />
       ) : listings && listings.length > 0 ? (
         <>
-            <main>
-                <ul className="categoryListings">
-                {listings.map((listing) => (
-                  <ListingItem listing={listing.data} id={listing.id} />
-                ))}
-                </ul>
-            </main>
+          <main>
+            <ul className='categoryListings'>
+              {listings.map((listing) => (
+                <ListingItem
+                  listing={listing.data}
+                  id={listing.id}
+                  key={listing.id}
+                />
+              ))}
+            </ul>
+          </main>
         </>
       ) : (
-        <p> No listings for {params.categoryName}</p>
+        <p>No listings for {params.categoryName}</p>
       )}
     </div>
-  );
+  )
 };
 
 export default Category;
