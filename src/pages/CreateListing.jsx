@@ -15,7 +15,7 @@ import { db } from "../firebase.config";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const CreateListing = () => {
-  const [geolocationEnabled, setGeolocationEnabled] = useState(false);
+  const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: "rent",
@@ -78,7 +78,7 @@ const CreateListing = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (discountedPrice >= regularPrice) {
+    if (+discountedPrice >= +regularPrice) {
       setLoading(false);
       toast.error("Discounted price needs to be less than regular price");
       return;
@@ -93,12 +93,14 @@ const CreateListing = () => {
     let geolocation = {};
     let location;
     if (geolocationEnabled) {
+
+
       const responce = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`
       );
       const data = await responce.json();
-      geolocation.lat = data.results[0]?.geomatry.location.lat ?? 0;
-      geolocation.lng = data.results[0]?.geomatry.location.lng ?? 0;
+      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0
+      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0
 
       location =
         data.status === "ZEOR_RESULTS"
@@ -108,12 +110,13 @@ const CreateListing = () => {
       if (location === undefined || location.includes === "undefined") {
         setLoading(false);
         toast.error("please enter a correct address");
+        return
       }
     } else {
       geolocation.lat = latitude;
       geolocation.lng = longitude;
-      location = address;
-      console.log(geolocation, location);
+      // location = address;
+      // console.log(geolocation, location);
     }
 
     //store images in firebase
@@ -156,34 +159,31 @@ const CreateListing = () => {
     };
 
     const imgUrls = await Promise.all(
-      [...images].map((image)=>storeImage(image))
-    ).catch(
-      ()=>{
-        setLoading(false)
-        toast.error('Images not uploaded')
-        return
-      }
-    )
+      [...images].map((image) => storeImage(image))
+    ).catch(() => {
+      setLoading(false);
+      toast.error("Images not uploaded");
+      return;
+    });
 
-
-    const formDataCopy ={
+    const formDataCopy = {
       ...formData,
       imgUrls,
       geolocation,
-      timestamp: serverTimestamp()
-    }
+      timestamp: serverTimestamp(),
+    };
 
-    delete formDataCopy.images
-    delete formDataCopy.address
-    location && (formDataCopy.location = location)
-    !formDataCopy.offer && delete formDataCopy.discountedPrice
+    formDataCopy.location = address;
+    delete formDataCopy.images;
+    delete formDataCopy.address;
 
-    const docRef = await addDoc(collection(db, 'listings'),
-    formDataCopy)
+    !formDataCopy.offer && delete formDataCopy.discountedPrice;
+
+    const docRef = await addDoc(collection(db, "listings"), formDataCopy);
 
     setLoading(false);
-    toast.success('Liating saved')
-    navigate(`category/${formDataCopy.type}/${docRef.id}`)
+    toast.success("Liating saved");
+    navigate(`category/${formDataCopy.type}/${docRef.id}`);
   };
 
   const onMutate = (e) => {
