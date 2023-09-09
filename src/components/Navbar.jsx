@@ -17,7 +17,7 @@ const Navbar = () => {
   return (
     <footer className="navbar">
       <nav className="navbarNav">
-        <ui className="navbarListItems">
+        <ul className="navbarListItems">
           <li className="navbarListItem" onClick={() => navigate("/")}>
             <ExploreIcon
               fill={pathMatchRoute("/") ? "#2c2c2c" : "#8f8f8f"}
@@ -66,7 +66,7 @@ const Navbar = () => {
               Profile
             </p>
           </li>
-        </ui>
+        </ul>
       </nav>
     </footer>
   );

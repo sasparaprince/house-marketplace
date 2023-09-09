@@ -59,7 +59,7 @@ const Offers = () => {
     <div className="category">
       <header>
         <p className="pageHeader">
-        Offers
+          Offers
         </p>
       </header>
 
