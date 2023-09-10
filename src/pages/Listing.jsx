@@ -34,7 +34,7 @@ function Listing() {
       const docSnap = await getDoc(docRef)
 
       if (docSnap.exists()) {
-        console.log(docSnap.data());
+        // console.log(docSnap.data());
         setListing(docSnap.data())
         setLoading(false)
       }
@@ -91,7 +91,7 @@ function Listing() {
 
       <div className='listingDetails'>
         <p className='listingName'>
-          {listing.name} - $
+          {listing.name} - ₹
           {listing.offer
             ? listing.discountedPrice
                 .toString()
@@ -106,7 +106,7 @@ function Listing() {
         </p>
         {listing.offer && (
           <p className='discountPrice'>
-            ${listing.regularPrice - listing.discountedPrice} discount
+          ₹ {listing.regularPrice - listing.discountedPrice} discount
           </p>
         )}
 
@@ -129,10 +129,10 @@ function Listing() {
 
         <div className='leafletContainer'>
           <MapContainer
-            style={{ height: '100%', width: '100%' }}
+            style={{ height: '100%', width: '100%'}}
             center={[listing.geolocation.lat, listing.geolocation.lng]}
             zoom={13}
-            scrollWheelZoom={false}
+            scrollWheelZoom={true}
           >
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
