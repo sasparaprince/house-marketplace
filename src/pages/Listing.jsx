@@ -3,9 +3,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getDoc, doc } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 import { db } from '../firebase.config'
-import Spinner from '../components/Spinner'
+import spinner from '../components/Spinner'
 import shareIcon from '../assets/svg/shareIcon.svg'
-
+import { MapContainer, Marker, Market, Popup, TileLayer } from 'react-leaflet'
 
 const Listing = () => {
 
@@ -71,17 +71,28 @@ const Listing = () => {
                 )}
                 <ul className='listingDetailsList'>
                     <li>
-                        {listing.bedrooms > 1 ? `${listing.bedrooms} Bedrooms` : '1 Bedroom'} 
+                        {listing.bedrooms > 1 ? `${listing.bedrooms} Bedrooms` : '1 Bedroom'}
                     </li>
                     <li>
-                        {listing.bathrooms > 1 ? `${listing.bathrooms} Bathrooms` : '1 Bathroom'} 
+                        {listing.bathrooms > 1 ? `${listing.bathrooms} Bathrooms` : '1 Bathroom'}
                     </li>
                     <li>{listing.parking && 'Parking Spot'}</li>
                     <li>{listing.furnished && 'furnished'}</li>
                 </ul>
                 <p className="listingLocationTitle">Location</p>
 
-                {/* MAP  */}
+                <div className="leafletContainer">
+                    <MapContainer style={{ height: '100%', width: '100%' }} center={[listing.geolocation.lat, listing.geolocation.lng]} zoom={12} scrollWheelZoom={true}>
+                        <TileLayer
+                            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            url='https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'
+                        />
+                    <Marker position={[listing.geolocation.lat, listing.geolocation.lng]} >
+                        <Popup>{listing.location}</Popup>
+                    </Marker>
+
+                    </MapContainer>
+                </div>
 
                 {auth.currentUser?.uid !== listing.userRef && (
                     <Link to={`/contact/${listing.userRef}?listingName=${listing.name}`} className='primaryButton'>Contact Landlord</Link>
