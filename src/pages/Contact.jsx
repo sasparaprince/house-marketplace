@@ -50,7 +50,6 @@ setMessage(e.target.value)
                         <div className="messageDiv">
                             <label htmlFor="message" className="messageLabel">Message</label>
                             <textarea name="message" id="message" className='textarea' value={message} onChange={onChange}></textarea>
-
                         </div>
 
                         <a href={`mailto:${landlord.email}?Subject=${searchParams.get('listingName')}&body=${message}`}>
