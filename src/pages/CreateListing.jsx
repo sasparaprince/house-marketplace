@@ -15,6 +15,7 @@ import { db } from "../firebase.config";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const CreateListing = () => {
+  // eslint-disable-next-line
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -142,6 +143,8 @@ const CreateListing = () => {
               case "running":
                 console.log("Upload is running");
                 break;
+              default:
+                break
             }
           },
           (error) => {
